@@ -37,24 +37,20 @@ def login_view(request):
     if request.method == 'POST':
         form = LoginForm(request.POST)
         if form.is_valid():
-            user = authenticate(
-                request,
-                username=form.cleaned_data['username'],
-                password=form.cleaned_data['password']
-            )
-            if user:
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+
+            user = authenticate(request, username=username, password=password)
+            if user is not None:
                 login(request, user)
-                messages.success(request, 'Login successful!')
-                return redirect(request.POST.get('next') or 'dashboard')
+                messages.success(request, "Login successful!")
+                return redirect('dashboard')   # 👈 THIS LINE
             else:
-                messages.error(request, 'Invalid username or password!')
+                messages.error(request, "Invalid username or password")
     else:
         form = LoginForm()
 
-    return render(request, 'login.html', {
-        'form': form,
-        'next': request.GET.get('next')
-    })
+    return render(request, 'login.html', {'form': form})
 
 
 def logout_view(request):
