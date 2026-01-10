@@ -25,6 +25,11 @@ def register(request):
     else:
         form = RegisterForm()
     return render(request, 'register.html', {'form': form})
+from django.contrib.auth import authenticate, login
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from .forms import LoginForm
+
 def login_view(request):
     if request.user.is_authenticated:
         return redirect('dashboard')
