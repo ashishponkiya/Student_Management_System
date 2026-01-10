@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Student Management System</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #43cea2 0%, #185a9d 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 20px;
+        }
+
+        .register-container {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .register-container h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+            font-weight: 600;
+        }
+
+        .form-group label {
+            font-weight: 500;
+            color: #555;
+            margin-bottom: 8px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            border-radius: 6px;
+            border: 1px solid #ddd;
+            padding: 10px 12px;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: #43cea2;
+            box-shadow: 0 0 5px rgba(67, 206, 162, 0.5);
+        }
+
+        .btn-register {
+            background: linear-gradient(135deg, #43cea2 0%, #185a9d 100%);
+            border: none;
+            padding: 10px;
+            font-weight: 600;
+            border-radius: 6px;
+            width: 100%;
+            transition: transform 0.3s ease;
+            color: white;
+        }
+
+        .btn-register:hover {
+            transform: translateY(-2px);
+            color: white;
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .login-link a {
+            color: #185a9d;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+
+        .error-messages {
+            margin-bottom: 20px;
+        }
+
+        .alert {
+            border-radius: 6px;
+        }
+
+        .form-text {
+            font-size: 0.85rem;
+            color: #666;
+        }
+
+        .password-requirements {
+            background: #f8f9fa;
+            border-left: 4px solid #43cea2;
+            padding: 10px;
+            border-radius: 4px;
+            margin-top: 10px;
+            font-size: 0.9rem;
+        }
+
+        .password-requirements ul {
+            margin: 5px 0 0 0;
+            padding-left: 20px;
+        }
+
+        .password-requirements li {
+            margin: 3px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="register-container">
+        <h2>📝 Register</h2>
+
+        {% if messages %}
+            <div class="error-messages">
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label for="first_name">First Name</label>
+                <input type="text" name="first_name" id="first_name" class="form-control" required>
+                {% if form.first_name.errors %}
+                    <small class="text-danger">{{ form.first_name.errors }}</small>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                <label for="last_name">Last Name</label>
+                <input type="text" name="last_name" id="last_name" class="form-control" required>
+                {% if form.last_name.errors %}
+                    <small class="text-danger">{{ form.last_name.errors }}</small>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" name="email" id="email" class="form-control" required>
+                {% if form.email.errors %}
+                    <small class="text-danger">{{ form.email.errors }}</small>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" name="username" id="username" class="form-control" required>
+                {% if form.username.errors %}
+                    <small class="text-danger">{{ form.username.errors }}</small>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                <label for="password1">Password</label>
+                <input type="password" name="password1" id="password1" class="form-control" required>
+                <div class="password-requirements">
+                    <strong>Password Requirements:</strong>
+                    <ul>
+                        <li>At least 8 characters long</li>
+                        <li>Cannot be entirely numeric</li>
+                        <li>Cannot be similar to username</li>
+                    </ul>
+                </div>
+                {% if form.password1.errors %}
+                    <small class="text-danger">{{ form.password1.errors }}</small>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                <label for="password2">Confirm Password</label>
+                <input type="password" name="password2" id="password2" class="form-control" required>
+                {% if form.password2.errors %}
+                    <small class="text-danger">{{ form.password2.errors }}</small>
+                {% endif %}
+            </div>
+
+            <button type="submit" class="btn btn-register">Register</button>
+        </form>
+
+        <div class="login-link">
+            Already have an account? <a href="{% url 'login' %}">Login here</a>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+</body>
+</html>
